@@ -3,6 +3,7 @@ from django.views import View
 from django.conf import settings
 from django.http import JsonResponse
 from .forms import ResumeForm
+from .models import Resume
 from pyresparser import ResumeParser
 import os
 
@@ -22,11 +23,12 @@ class ResumeUpload(View):
         #     return render(self.request, 'resume/upload.html')
         # else:
         #     return render(self.request, 'resume/upload.html')
+        resumes = Resume.objects.all()
         form = ResumeForm(self.request.POST, self.request.FILES)
         files = request.FILES.getlist('file')
         try:
             for file in files:
-                print(file.name)
+                print()
             if form.is_valid():
                 resume = form.save()
                 resume_path = os.path.join(settings.BASE_DIR, resume.file.url[1:])
