@@ -1,0 +1,1 @@
+web: gunicorn --port=$PORT ResumeExtractor.wsgi:application
