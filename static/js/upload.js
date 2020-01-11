@@ -1,7 +1,7 @@
 // to upload files and show modal on start and stop of resume uploads with progress bar
 $(function () {
 
-  $(".js-upload-photos").click(function () {
+  $(".js-upload-resumes").click(function () {
     $("#fileupload").click();
   });
 
@@ -22,10 +22,17 @@ $(function () {
       $(".progress-bar").text(strProgress);
     },
     done: function (e, data) {
+      $("#close").click();
       if (data.result.is_valid) {
         $("#gallery tbody").prepend(
-          "<tr><td><a href='" + data.result.path + "'>" + data.result.name + "</a></td></tr>"
+          "<tr><td><a href='" + data.result.url + "'>" + data.result.name+ "</a><br>" + data.result.skills +"</td></tr>"
         )
+      }
+      else {
+        $("#alert-error").prepend(
+            '<p>'+ data.result.error +'</p>'
+        )
+        $("#alert-error").show();
       }
     }
 

@@ -10,15 +10,20 @@
 {#            </button>#}
 {#        </form>#}
 
-    <button type="button" class="btn btn-primary js-upload-photos">
-         <span class="glyphicon glyphicon-cloud-upload"></span> Upload Resume
+    <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
+{#        <span class="glyphicon glyphicon-triangle-bottom" style="font-size: 4rem;"></span>#}
+        <i class="fa fa-upload fa-lg"></i>
+        <h3>Drop Resumes Here to Upload</h3>
+    </div>
+    <button type="button" class="btn btn-primary js-upload-resumes">
+         Upload Resume
     </button>
 
     <input id="fileupload" type="file" name="file" multiple
        style="display: none;"
        data-url="{% url 'resume_upload' %}"
        data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
-
+    <br><br>
     <table id="gallery" class="table table-bordered">
       <thead>
         <tr>
@@ -48,6 +53,7 @@
         </div>
       </div>
     </div>
+    <div class="alert alert-danger" id="alert-error" role="alert" style="display: none"></div>
 
 {% endblock %}
 
