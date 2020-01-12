@@ -1,6 +1,6 @@
 // to upload files and show modal on start and stop of resume uploads with progress bar
 $(function () {
-
+  var noModal = false;
   $(".js-upload-resumes").click(function () {
     $("#fileupload").click();
   });
@@ -9,7 +9,9 @@ $(function () {
     dataType: 'json',
     sequentialUploads: true,
     start: function (e) {
-      $("#modal-progress").modal("show");
+      if (!(noModal)) {
+        $("#modal-progress").modal("show");
+      }
     },
     stop: function (e) {
       const hide = $("#modal-progress");
@@ -22,7 +24,6 @@ $(function () {
       $(".progress-bar").text(strProgress);
     },
     done: function (e, data) {
-      $("#close").click();
       if (data.result.is_valid) {
         $("#gallery tbody").prepend(
           "<tr><td><a href='" + data.result.url + "'>" + data.result.name+ "</a><br>" + '<b>Skills: </b>'+ data.result.skills +"</td></tr>"
@@ -36,6 +37,17 @@ $(function () {
       }
     }
 
+  });
+  // validating files
+  $('input[type=file]').change(function () {
+      var val = $(this).val().toLowerCase(),
+          regex = new RegExp("(.*?)\.(docx|doc|pdf)$");
+
+      if (!(regex.test(val))) {
+          $(this).val('');
+          noModal = true;
+          alert('Please upload correct resume format pdf, docx or doc');
+      }
   });
 
 });
