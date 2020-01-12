@@ -26,7 +26,7 @@ $(function () {
     done: function (e, data) {
       if (data.result.is_valid) {
         $("#gallery tbody").prepend(
-          "<tr><td><a href='" + data.result.url + "'>" + data.result.name+ "</a><br>" + '<b>Skills: </b>'+ data.result.skills +"</td></tr>"
+          "<tr><td><a href='" + data.result.url + "'>" + data.result.name+ "</a>" + '<span class="text-success" style="text-align: right;">  (' +"Time to extract: "+ data.result.time +'s)</span>' + "<br>" + '<b>Skills: </b>'+ data.result.skills +"</td></tr>"
         )
       }
       else {

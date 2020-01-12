@@ -2,39 +2,31 @@
 {% load static %}
 {% block content %}
     <div class="container">
-{#        <form method="post" enctype="multipart/form-data">#}
-{#            {% csrf_token %}#}
-{#            {{ form.as_p }}#}
-{#            <button type="submit" class="btn btn-primary">#}
-{#                <span class="glyphicon glyphicon-cloud-upload"></span> Upload Resume#}
-{#            </button>#}
-{#        </form>#}
+        <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
+            <i class="fa fa-upload fa-lg"></i>
+            <h3>Drop Resume/s Here to Upload</h3>
+            <br>or<br>
+            <button type="button" class="btn btn-primary js-upload-resumes">
+                Upload Resume/s
+            </button>
+        </div>
 
-    <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
-        <i class="fa fa-upload fa-lg"></i>
-        <h3>Drop Resume/s Here to Upload</h3>
-        <br>or<br>
-        <button type="button" class="btn btn-primary js-upload-resumes">
-            Upload Resume/s
-        </button>
-    </div>
+        <input id="fileupload" type="file" name="file" multiple
+           accept=".pdf, .docx, .doc"
+           style="display: none;"
+           data-url="{% url 'resume_upload' %}"
+           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
 
-    <input id="fileupload" type="file" name="file" multiple
-       accept=".pdf, .docx, .doc"
-       style="display: none;"
-       data-url="{% url 'resume_upload' %}"
-       data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
-
-    <table id="gallery" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Resumes</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    <br><div class="alert alert-danger" id="alert-error" role="alert" style="display: none"></div>
+        <table id="gallery" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Resumes</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <br><div class="alert alert-danger" id="alert-error" role="alert" style="display: none"></div>
     </div>
 
 
@@ -45,7 +37,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button id="close" type="button" class="close" data-dismiss="modal" style="display: none">&times;</button>
-            <h4 class="modal-title">Uploading...</h4>
+            <h4 class="modal-title">Uploading...wait for resume to appear..</h4>
           </div>
           <div class="modal-body">
             <div class="progress">

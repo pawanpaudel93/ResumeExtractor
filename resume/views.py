@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.views import View, generic
-from django.conf import settings
 from django.http import JsonResponse
 from .forms import ResumeForm
 from .models import Resume
 from pyresparser import ResumeParser
-import os
+import time
 
 
 class ResumeUpload(View):
@@ -14,19 +13,11 @@ class ResumeUpload(View):
         return render(self.request, 'resume/upload.html', {'form': form})
 
     def post(self, request):
-        # form = ResumeForm(self.request.POST, self.request.FILES)
-        # files = request.FILES.getlist('file')
-        # if form.is_valid():
-        #     for file in files:
-        #         print(file)
-        #         pass
-        #     return render(self.request, 'resume/upload.html')
-        # else:
-        #     return render(self.request, 'resume/upload.html')
         form = ResumeForm(self.request.POST, self.request.FILES)
         files = request.FILES.getlist('file')
         try:
             for file in files:
+                start_time = time.time()
                 resume_file = Resume.objects.filter(name__exact=file.name).exists()
                 if form.is_valid() and not resume_file:
                     resume = form.save(commit=False)
@@ -38,16 +29,26 @@ class ResumeUpload(View):
                         skills = ', '.join(skills)
                     resume.skills = skills
                     resume.save()
-                    data = {'is_valid': True, 'name': resume.name, 'url': resume.file.url, 'skills': skills}
+                    elapsed_time = time.time() - start_time
+                    elapsed_time = "%.2f" % elapsed_time
+                    if elapsed_time == 'undefined':
+                        elapsed_time = 0
+                    data = {'is_valid': True, 'name': resume.name, 'url': resume.file.url,
+                            'skills': skills, 'time': elapsed_time}
                 elif resume_file:
+                    elapsed_time = time.time() - start_time
+                    elapsed_time = "%.2f" % elapsed_time
+                    if elapsed_time == 'undefined':
+                        elapsed_time = 0
                     resume = Resume.objects.get(name__exact=file.name)
                     data = {'is_valid': True, 'error': '%s already exists...' % file.name,
-                            'name': resume.name, 'url': resume.file.url, 'skills': resume.skills}
+                            'name': resume.name, 'url': resume.file.url, 'skills': resume.skills, 'time': elapsed_time}
                 else:
                     data = {'is_valid': False, 'error': 'File not supported. Please upload pdf or docx or doc resumes'}
                 return JsonResponse(data)
         except BaseException as e:
-            data = {'is_valid': False, 'error': str(e)}
+            print(e)
+            data = {'is_valid': False, 'error': 'Error in server'}
             return JsonResponse(data)
 
 
