@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views import View
+from django.views import View, generic
 from django.conf import settings
 from django.http import JsonResponse
 from .forms import ResumeForm
@@ -38,7 +38,7 @@ class ResumeUpload(View):
                         skills = ', '.join(skills)
                     resume.skills = skills
                     resume.save()
-                    data = {'is_valid': True, 'name': resume.file.name, 'url': resume.file.url, 'skills': skills}
+                    data = {'is_valid': True, 'name': resume.name, 'url': resume.file.url, 'skills': skills}
                 elif resume_file:
                     resume = Resume.objects.get(name__exact=file.name)
                     data = {'is_valid': True, 'error': '%s already exists...' % file.name,
@@ -49,3 +49,11 @@ class ResumeUpload(View):
         except BaseException as e:
             data = {'is_valid': False, 'error': str(e)}
             return JsonResponse(data)
+
+
+class DisplayResume(generic.ListView):
+    template_name = 'resume/skills.html'
+    context_object_name = 'resumes'
+
+    def get_queryset(self):
+        return Resume.objects.all()
