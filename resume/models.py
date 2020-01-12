@@ -16,8 +16,9 @@ class Resume(models.Model):
 
 
 # delete files from media in local or in production storage after resume instance deleted
-@receiver(post_delete, sender=Resume)
-def resume_post_delete(sender, **kwargs):
-    resume = kwargs['instance']
-    storage, name = resume.file.storage, resume.file.name
-    storage.delete(name)
+# this signal worked perfectly on local but has problem on production so added django-cleanup
+# @receiver(post_delete, sender=Resume)
+# def resume_post_delete(sender, **kwargs):
+#     resume = kwargs['instance']
+#     storage, name = resume.file.storage, resume.file.name
+#     storage.delete(name)
