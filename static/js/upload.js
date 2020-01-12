@@ -25,7 +25,7 @@ $(function () {
       $("#close").click();
       if (data.result.is_valid) {
         $("#gallery tbody").prepend(
-          "<tr><td><a href='" + data.result.url + "'>" + data.result.name+ "</a><br>" + data.result.skills +"</td></tr>"
+          "<tr><td><a href='" + data.result.url + "'>" + data.result.name+ "</a><br>" + '<b>Skills: </b>'+ data.result.skills +"</td></tr>"
         )
       }
       else {
