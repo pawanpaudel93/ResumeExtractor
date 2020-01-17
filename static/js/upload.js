@@ -38,16 +38,16 @@ $(function () {
     }
 
   });
-  // validating files
-  $('input[type=file]').change(function () {
-      var val = $(this).val().toLowerCase(),
-          regex = new RegExp("(.*?)\.(docx|doc|pdf)$");
-
-      if (!(regex.test(val))) {
-          $(this).val('');
-          noModal = true;
-          alert('Please upload correct resume format pdf, docx or doc');
-      }
-  });
-
 });
+
+// validating files
+$('input[type=file]').change(function () {
+    var val = $(this).val().toLowerCase(),
+        regex = new RegExp("(.*?)\.(docx|doc|pdf)$");
+
+    if (!(regex.test(val))) {
+        $(this).val('');
+        noModal = true;
+        alert('Please upload correct resume format pdf, docx or doc');
+    }
+  });
